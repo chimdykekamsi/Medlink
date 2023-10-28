@@ -1,0 +1,10 @@
+﻿@using Medlink.Controllers
+
+@{
+    
+    if(UserController.loginid != null){
+        Layout = "_loginLayout";
+    }else{
+        Layout = "_Layout";
+    }
+}

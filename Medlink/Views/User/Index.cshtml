@@ -1,0 +1,85 @@
+﻿@model UserModel
+@{
+    ViewData["Title"] = "Index";
+    var obj = Model;
+}
+<style>
+    .card{
+        background-color:rgba(255,255,255,.7);
+    }
+</style>
+<div class="row">
+    <div class="card col-lg-3">
+        <div class="card-body pb-1">
+            <div class="row p-1">
+                <div class="col-7">
+                    <img src="@Url.Content("~/uploads/" + obj.profile)" class="rounded-circle img-fluid img-thumbnail" alt="Circular Image">
+                </div>
+                <div class="m-2">
+                    <i> @obj.specialty</i>
+                    <h5><i class="fas fa-user fa-sm text-go"></i> @obj.fullname</h5>
+                    <h6 class="fw-bolder"><i class="fas fa-user fa-sm text-go"></i> @obj.username</h6>
+                    <h6><i class="fas fa-envelope fa-sm text-go"></i> @obj.email</h6>
+                    <p>
+                        <i class="fas fa-book fa-sm text-go"></i> Lorem Ipsum es simplemente logró hacer un libro de textos especimen.
+                        No sólo sobrevivió 500 años</p>
+                    <a class="btn text-go col-12 btn-outline-go" asp-controller="User" asp-action="Doctor" asp-route-id="@obj.user_id">
+                        Start a discussion <i class="fas fa-comment"></i>
+                    </a>
+                </div>
+                <h4 class="fw-bolder text-go text-center"> <i class="fas fa-comment"></i> 23  <i class="fas fa-thumbs-up"></i> 10 <i class="fas fa-comment"></i><i class="fas fa-comment" style="margin-left:-16px"></i> 23  </h4>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9  pt-2" style="min-height:80vh;max-height:80vh;overflow-y:scroll">
+        <h5>My discussions</h5>
+        <div class="container mt-4">
+
+            <div class="card mb-2">
+                <div class="row no-gutters">
+                    <!-- Left-aligned image column (col-3) -->
+                    <div class="col-md-3">
+                        <img src="https://placekitten.com/150/150" class="card-img" alt="Sample Image">
+                    </div>
+                    <!-- Details column (col-9) -->
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <div class="text-go col-12" style="display:flex;justify-content:right;gap:10px">
+                                <a asp-controller="Post" asp-action="Edit"><i class="fas fa-edit text-warning"></i></a>
+                                <a asp-action="Delete" asp-controller="Post"><i class="fas fa-trash-alt text-danger"></i></a>
+                            </div>
+                            <h5 class="card-title">Card Title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-2">
+                <div class="row no-gutters">
+                    <!-- Left-aligned image column (col-3) -->
+                    <div class="col-md-3">
+                        <img src="https://placekitten.com/150/150" class="card-img" alt="Sample Image">
+                    </div>
+                    <!-- Details column (col-9) -->
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <div class="text-go col-12" style="display:flex;justify-content:right;gap:10px">
+                                <a asp-controller="Post" asp-action="Edit"><i class="fas fa-edit text-warning"></i></a>
+                                <a asp-action="Delete" asp-controller="Post"><i class="fas fa-trash-alt text-danger"></i></a>
+                            </div>
+                            <h5 class="card-title">Card Title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

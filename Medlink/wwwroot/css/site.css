@@ -1,0 +1,85 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(30, 148, 162);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../assets/logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.3; 
+    z-index: -1;
+}
+* {
+    font-family:Helvetica;
+}
+.btn.btn-go {
+    background-color: rgb(30, 148, 162);
+}
+.text-go {
+    color: rgb(30, 148, 162);
+}
+.btn.btn-outline-go {
+    border-color: rgb(30, 148, 162);
+    color: rgb(30, 148, 162);
+}
+.btn.btn-outline-go:hover{
+    background-color: rgb(30, 148, 162);
+    color:white;
+}
+#preloader {
+    min-height: 100vh;
+    z-index: 3;
+    background: linear-gradient(white,rgb(30, 148, 162));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    flex-direction:column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity:1;
+    transition:opacity 0.5s ease-out;
+}
+#preloader.hidden{
+    display:none;
+}
+
+
+.svg {
+    animation: floatAnimation 1s infinite alternate ease-in-out;
+}
+
+
+@keyframes floatAnimation {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-10px); 
+    }
+}

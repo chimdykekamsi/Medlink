@@ -1,0 +1,101 @@
+﻿@model UserModel
+@{
+    ViewData["Title"] = "Register";
+}
+<style>
+    .card {
+        background-color: rgb(255, 255, 255,.2);
+        border: none;
+    }
+</style>
+<div class="row mb-5">
+    <div class="col-12 col-lg-6">
+        <h1 class="fw-bolder display-2 d-block d-lg-none">Create a new account</h1>
+        <h1 class="fw-bolder d-none d-lg-block">Create a new account</h1>
+        <div class="p-3 text-center text-lg-start d-none d-lg-block">
+            <img src="~/assets/signup.svg" alt="Logo" class="img-fluid mr-2 svg" width="65%"/>
+        </div>        
+    </div>
+    <div class="col-12 col-lg-6">        
+        <div class="card">
+            <form class="form m-3" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label asp-for="profile">Profile Image:</label>
+                    <input asp-for="profile" type="file" name="profile" accept=".jpg, .jpeg, .png" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label asp-for="fullname" class="fw-bolder">Fullname...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input asp-for="fullname" id="fullname" class="form-control input-group-append" type="text" placeholder="Legal firstname and lastname" required/>
+                        <span asp-validation-for="fullname" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username" class="fw-bolder">Username...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input asp-for="username" id="username" class="form-control input-group-append" type="text" placeholder="A unique name for display" required/>
+                        <span asp-validation-for="username" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="fw-bolder">Email...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <input asp-for="email" id="email" class="form-control input-group-append" type="email" placeholder="An email address linked with your fullname" required/>
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specialty" class="fw-bolder">Specialty...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-redo"></i></span>
+                        </div>
+                        <input asp-for="specialty" id="specialty" class="form-control input-group-append" type="text" placeholder="Let us know your field of specialization" required/>
+                        <span asp-validation-for="specialty" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="fw-bolder">Password...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input asp-for="password" id="password" class="form-control input-group-append" type="password" placeholder="Use a strong password" required/>
+                        <span asp-validation-for="password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="repassword" class="fw-bolder">Repeat Password...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input id="repassword" name="repassword"class="form-control input-group-append" type="password" placeholder="Retype your password"/>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-2 text-center">
+                    <button class="btn btn-go text-light col-8 btn-lg" type="submit">Register Account</button>
+                    <label>Already have an account? <a asp-action="Login">Login</a> instead</label>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+

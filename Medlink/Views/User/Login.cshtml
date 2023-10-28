@@ -1,0 +1,56 @@
+﻿@model UserModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    .card {
+        background-color: rgb(255, 255, 255,.2);
+        border: none;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <h1 class="fw-bolder display-2 d-block d-lg-none">Log into your account</h1>
+        <h1 class="fw-bolder d-none d-lg-block">Log into your account</h1>
+        <div class="p-3 text-center text-lg-start d-none d-lg-block">
+            <img src="~/assets/signup.svg" alt="Logo" class="img-fluid mr-2 svg" width="65%" />
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="card">
+            <form class="form m-3" method="post">
+                <div asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label for="email" class="fw-bolder">Email...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <input id="email" name="email" class="form-control input-group-append" type="email" placeholder="An email address linked with your account" required/>
+                        @*<span asp-validation-for="email" class="text-danger"></span>*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="fw-bolder">Password...</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-go"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input id="password" name="password"  class="form-control input-group-append" type="password" placeholder="Your account password" required/>
+                        @*<span asp-validation-for="password" class="text-danger"></span>*@
+                    </div>
+                </div>
+
+                <div class="form-group mt-2 text-center">
+                    <button class="btn btn-go text-light col-8 btn-lg" type="submit">Login</button>
+                    <label>Dont have an account? <a asp-action="Register">Create an account</a> instead</label>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
