@@ -1,32 +1,39 @@
 ﻿using Medlink.Data;
 using Medlink.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Medlink.Controllers
 {
     public class UserController : Controller
     {
-        public static string loginid { get; set; }
-
+        public static string? Loginid { get; set; }
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public UserController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment, ILogger<UserController> logger)
         {
             _db = db;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            if(UserController.loginid == null)
+            if (UserController.Loginid == null)
             {
                 return RedirectToAction("Login");
             }
+            else if (UserController.Loginid == "Admin123")
+            {
+                return RedirectToAction("List");
+            }
             else
             {
-                UserModel user = _db.Users.FirstOrDefault(u => u.user_id == UserController.loginid);
-                return View(user);
+                UserModel user = _db.Users.FirstOrDefault(u => u.user_id == UserController.Loginid);
+                IEnumerable<PostModel> posts = _db.Posts.Where(p => p.user_id == UserController.Loginid).ToList();
+                return View(Tuple.Create(user, posts));
             }
         }
 
@@ -64,6 +71,8 @@ namespace Medlink.Controllers
                
                 _db.Users.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Registration Successfull Please login";
+
                 return RedirectToAction("Login");
             }
             return View(obj);
@@ -77,11 +86,13 @@ namespace Medlink.Controllers
             if (id != null)
             {
                 UserModel user = _db.Users.FirstOrDefault(u => u.user_id == id);
-                if (id == UserController.loginid)
+                IEnumerable<PostModel> posts = _db.Posts.Where(p => p.user_id == id).ToList();
+                
+                if (id == UserController.Loginid)
                 {
                     return RedirectToAction("Index");
                 }
-                return user != null ? View(user) : RedirectToAction("List");
+                return user != null ? View(Tuple.Create(user, posts)) : RedirectToAction("List");
             }
             return RedirectToAction("List");
         }
@@ -111,22 +122,32 @@ namespace Medlink.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(string email,string password)
         {
-            UserModel user = _db.Users.FirstOrDefault(u => u.email == email);
-            if (user != null)
+            if(password == "Admin123")
             {
-                if (user.password == password)
-                {
-                    UserController.loginid = user.user_id;
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("password", "login failed the password is incorrect");
-                }
+                TempData["success"] = "Welcome Admin";
+                UserController.Loginid = "Admin123";
+                return RedirectToAction("List");
             }
             else
             {
-                ModelState.AddModelError("email", "login failed email matched no row in d database");                
+                UserModel user = _db.Users.FirstOrDefault(u => u.email == email);
+                if (user != null)
+                {
+                    if (user.password == password)
+                    {
+                        UserController.Loginid = user.user_id;
+                        TempData["success"] = "login Successful";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["warning"] = "login failed the password is incorrect";
+                    }
+                }
+                else
+                {
+                    TempData["warning"] = "login failed email matched no row in d database";
+                }
             }
             return View();
         }
@@ -146,5 +167,86 @@ namespace Medlink.Controllers
             return uniqueFileName;
         }
 
+        public IActionResult Setting()
+        {
+            if (UserController.Loginid == null)
+            {
+                return RedirectToAction("Login");
+            }else if (UserController.Loginid == "Admin123")
+            {
+                return RedirectToAction("List");
+            }
+            else
+            {
+                UserModel user = _db.Users.FirstOrDefault(u => u.user_id == UserController.Loginid);
+                return View(user);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Setting(UserModel obj,string boolyValue, IFormFile? profile = null)
+        {
+            try
+            {
+                if (profile != null && profile.Length > 0)
+                {
+                    // Save the new profile image to a folder or storage service
+                    string newImagePath = SaveProfileImage(profile);
+
+                    // Update the UserModel with the new image path
+                    obj.profile = newImagePath;
+                }
+                else
+                {
+                    // No new profile image provided, maintain the existing one
+                    obj.profile = _db.Users.AsNoTracking().FirstOrDefault(u => u.user_id == obj.user_id)?.profile;
+                }
+               
+                    obj.visibility = boolyValue;
+
+                _db.Users.Update(obj);
+                _db.SaveChanges();
+                TempData["success"] = "Profile changes saved successfully";
+
+                return View(obj);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                TempData["warning"] =  "An error occurred while processing your request.";
+            }
+
+            return View(obj);
+        }
+
+
+
+        private void LogException(Exception ex)
+        {
+            _logger.LogError($"Exception: {ex.Message}", ex);
+        }
+
+        public IActionResult Logout()
+        {
+            UserController.Loginid = null;
+            return Redirect("../Home/");
+        }
+
+        public  string GetUserUsername(string userId)
+        {
+            // Assuming you have a method to retrieve a user by ID
+            UserModel? user = _db.Users.FirstOrDefault(u => u.user_id == userId);
+
+            // Check if the user exists
+            if (user != null)
+            {
+                // Return the username
+                return user.username;
+            }
+
+            // If the user doesn't exist, you can return a default value or handle it accordingly
+            return "User Not Found";
+        }
     }
 }

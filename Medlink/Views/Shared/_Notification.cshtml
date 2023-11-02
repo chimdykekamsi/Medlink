@@ -1,0 +1,38 @@
+﻿@{
+    var success = TempData["success"] as string;
+    var error = TempData["error"] as string;
+    var warning = TempData["warning"] as string;
+    var info = TempData["info"] as string;
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+}
+
+@if (!string.IsNullOrEmpty(success))
+{
+    <script type="text/javascript">
+        toastr.success('@success');
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <script type="text/javascript">
+        toastr.error('@error');
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(warning))
+{
+    <script type="text/javascript">
+        toastr.warning('@warning');
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(info))
+{
+     <script type="text/javascript">
+        toastr.info('@info');
+    </script>
+}

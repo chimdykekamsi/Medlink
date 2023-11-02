@@ -8,6 +8,7 @@
         border: none;
     }
 </style>
+<partial name="_Notification"></partial>
 <div class="row mb-5">
     <div class="col-12 col-lg-6">
         <h1 class="fw-bolder display-2 d-block d-lg-none">Create a new account</h1>
@@ -61,7 +62,7 @@
                     <label for="specialty" class="fw-bolder">Specialty...</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text text-go"><i class="fas fa-redo"></i></span>
+                            <span class="input-group-text text-go"><i class="fas fa-bullseye"></i></span>
                         </div>
                         <input asp-for="specialty" id="specialty" class="form-control input-group-append" type="text" placeholder="Let us know your field of specialization" required/>
                         <span asp-validation-for="specialty" class="text-danger"></span>

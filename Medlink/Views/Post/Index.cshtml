@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Medlink.Models.PostModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<style>
+    .card{
+        background-color:rgba(255,255,255,.7);
+    }
+</style>
+<h1>Index</h1>
+<div class="row">
+    @foreach(var item in Model)
+    {
+
+        var truncatedDetails = string.IsNullOrEmpty(item.details) || item.details.Length <= 100
+        ? item.details
+        : item.details.Substring(0, 100);
+        <div class="no-gutters col-md-6 mb-3">
+            <div class="card p-2">
+                <div class="col-md-12">
+                    <img src="@Url.Content("~/uploads/" + item.image)" class="card-img" alt="Post Image">
+                </div>
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <h5 class="card-title text-go">@item.title</h5>
+                        <p class="card-text">@truncatedDetails  <a asp-controller="Post" asp-action="Details" asp-route-id="@item.id"> <small>readmore...</small></a> </p>
+                        <small class="text-go col-md-12">@item.created_at</small> 
+                        <hr />
+                        <p class="card-text text-go row">
+                            
+                            <span id="likeBtn_@item.id" style="text-align:left; cursor:pointer" class="col-md-6" onload="hasUserLikedPost(@item.id)">
+                                <a class="text-outline-go" onclick="likePost(@item.id)"><i class="fas fa-thumbs-up"></i></a> @item.like_count
+                            </span>
+
+                            <span style="text-align:right" class="col-md-6">
+                                <i class="fas fa-comment"></i> @item.comment_count
+                            </span>
+                        </p>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+
+    function likePost(postId) {
+        // Use AJAX to send a request to the Like action in the controller
+        $.ajax({
+            url: '/Like/Like',
+            type: 'POST',
+            data: { postId: postId },
+            success: function (response) {
+                toastr.success("Liked 👍🏼");
+                // Refresh the current page
+                location.reload();
+            },
+            error: function () {
+                alert('An error occurred while liking the post.');
+            }
+        });
+    }
+
+    function hasUserLikedPost(postId) {
+        $.ajax({
+            url: '/Like/HasUserLikedPost',
+            type: 'GET',
+            data: { postId: postId },
+            success: function (response) {
+                // Assuming response.userLikedPost is a boolean indicating whether the user has liked the post
+                if (response.userLikedPost) {
+                    // User has liked the post, change the class to text-go
+                    $('#likeBtn_' + postId).removeClass('text-outline-go').addClass('text-go');
+                } else {
+                    // User has not liked the post, keep the class as text-outline-go
+                    $('#likeBtn_' + postId).addClass('text-outline-go');
+                }
+            },
+            error: function () {
+                console.error('An error occurred while checking if the user has liked the post.');
+            }
+        });
+    }
+
+</script>

@@ -8,6 +8,8 @@ namespace Medlink.Models
         public int id { get; set; }
         public string? user_id { get; set; }
         public string? profile { get; set; }
+        public string? bio { get; set; }
+        public string? education { get; set; }
         [Required]
         public string? fullname { get; set; }
         [Required]
@@ -17,6 +19,7 @@ namespace Medlink.Models
         [Required]
         public string? email { get; set; }
         public string? specialty { get; set; }
+        public string? visibility { get; set; } = "true";
         public DateTime created_at { get; set; } = DateTime.Now;
     }
 }

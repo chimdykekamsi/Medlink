@@ -1,0 +1,70 @@
+﻿@model Medlink.Models.PostModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label class="control-label"></label>
+                <input  class="form-control" type="file" name="imager"/>
+                @*<span asp-validation-for="image" class=" text-danger"></span>*@
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="user_id" class="control-label"></label>
+                <input asp-for="user_id" class="form-control" />
+                <span asp-validation-for="user_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="title" class="control-label"></label>
+                <input asp-for="title" class="form-control" />
+                <span asp-validation-for="title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="details" class="control-label"></label>
+                <textarea asp-for="details" class="form-control" rows="6"></textarea>
+                <span asp-validation-for="details" class="text-danger"></span>
+            </div>
+            <div class="form-group"  hidden>
+                <label asp-for="image" class="control-label"></label>
+                <input asp-for="image" class="form-control" value="@Model.image"/>
+                <span asp-validation-for="image" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="comment_count" class="control-label"></label>
+                <input asp-for="comment_count" class="form-control" />
+                <span asp-validation-for="comment_count" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="like_count" class="control-label"></label>
+                <input asp-for="like_count" class="form-control" />
+                <span asp-validation-for="like_count" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 mt-2">
+                <input type="submit" value="Save" class="btn btn-go form-control text-light" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    document.querySelector('form').addEventListener('submit', (e) => {
+        var bioTextArea = document.querySelector("textarea");
+        var bioValue = bioTextArea.value;
+
+        if (bioValue.length > 500) {
+            e.preventDefault();
+            toastr.warning("Bio exceeds 500 characters.");
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission
+    })
+</script>

@@ -1,0 +1,74 @@
+﻿@model Medlink.Models.PostDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    string? username = ViewData["Username"] as string;
+    var db = ViewData["db"];
+}
+
+<div class="mb-2 row">
+    <div class="row no-gutters col-md-6">
+        <!-- Image column (col-3) -->
+        <div class="col-md-12">
+            <a asp-controller="User" asp-action="Doctor" asp-route-id="@Model.Post.user_id"><h5 class="card-title text-go">@username</h5></a>
+            <img src="@Url.Content("~/uploads/" + Model.Post.image)" class="card-img" alt="Post Image" >
+        </div>
+        <!-- Details column (col-9) -->
+        <div class="col-md-12">
+            <div class="card-body">
+                
+                <h5 class="card-title text-go">@Model.Post.title</h5>
+                <p class="card-text">@Model.Post.details</p>
+                <small class="text-go col-md-12">@Model.Post.created_at</small> 
+                <hr />
+                <p class="card-text text-go row">
+                    <span style="text-align:left" class="col-md-6">
+                        <a class="text-outline-go"><i class="fas fa-thumbs-up"></i></a> @Model.Post.like_count
+                    </span>
+                    <span style="text-align:right" class="col-md-6">
+                        <i class="fas fa-comment"></i> @Model.Post.comment_count
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <form method="post" action="/Comment/AddComment">
+            <div class="input-group mb-3">
+                <input type="hidden" name="post_id" value="@Model.Post.id" />
+                <input type="text" class="form-control" name="comment" placeholder="Add a comment" aria-label="Add a comment" aria-describedby="commentButton">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-go" type="submit" id="commentButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+
+        <div id="commentListContainer">
+            @foreach (var comment in Model.Comments)
+            {
+                
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <p class="card-text">@comment.comment</p>
+                        <p class="card-text text-go row">
+                            <small class="text-go col-md-8">@comment.created_at</small>
+                            <span style="text-align:right" class="col-md-4">
+                                
+                                    <a asp-controller="User" asp-action="Doctor" asp-route-id="@comment.user_id">@comment.user_id</a>
+                                
+
+
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

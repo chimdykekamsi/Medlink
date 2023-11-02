@@ -1,0 +1,16 @@
+﻿@model List<CommentModel>
+
+@foreach (var comment in Model)
+{
+    <div class="card mb-2">
+        <div class="card-body">
+            <p class="card-text">@comment.comment</p>
+            <p class="card-text text-go row">
+                <small class="text-go col-md-8">@comment.created_at</small>
+                <span style="text-align:right" class="col-md-4">
+                    <!-- Additional comment information if needed -->
+                </span>
+            </p>
+        </div>
+    </div>
+}

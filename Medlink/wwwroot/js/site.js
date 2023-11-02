@@ -33,3 +33,12 @@ window.addEventListener('load', function () {
             }
         });
     });
+
+
+function update(ele){
+    if (ele.checked == true) {
+        document.querySelector("#visibility").value = "true";
+    } else {
+        document.querySelector("#visibility").value = "false";
+    }
+}

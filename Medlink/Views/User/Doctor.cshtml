@@ -1,8 +1,104 @@
-﻿@model UserModel
+﻿@model Tuple<UserModel, IEnumerable<PostModel>>
 @{
     ViewData["Title"] = "Doctor";
-    var obj = Model;
+    var obj = Model.Item1;
+    var posts = Model.Item2;
+    int totalPost = posts.ToList().Count;
+    var show = "";
+    if(obj.profile == "true"){
+        show = "Public";
+    }else{
+        show = "Private";
+    }
 }
+<style>
+    .input-group{
+        background-color:transparent;
+        outline:none;
+        border:1px solid rgb(30, 148, 162);
+        border-radius:10px;
+    }
+    .form-control:focus{
+         background-color:transparent;
+        outline:none;
+        border:none;
+    }
+    .form-control{
+         background-color:transparent;
+        outline:none;
+        border:none;
+        border-left:1px solid 1px solid rgb(30, 148, 162);
+    }
+    .card {
+        background-color: rgba(255,255,255,.7);
+    }
+</style>
+<div class="row">
+    <div class="card col-lg-3">
+        <div class="card-body pb-1">
+            <div class="row p-1">
+                <div class="col-7">
+                    <h5>@show</h5>
+                    <img src="@Url.Content("~/uploads/" + obj.profile)" class="rounded-circle img-fluid img-thumbnail" alt="Circular Image">
+                </div>
+                <div class="m-2">
+                    <i> @obj.specialty</i>
+                    <h5><i class="fas fa-user fa-sm text-go"></i> @obj.fullname</h5>
+                    <h6 class="fw-bolder"><i class="fas fa-user fa-sm text-go"></i> @obj.username</h6>
+                    <h6><i class="fas fa-envelope fa-sm text-go"></i> @obj.email</h6>
+                    <h6><i class="fas fa-graduation-cap fa-sm text-go"></i> @obj.education</h6>
+                    <p>
+                        <i class="fas fa-book fa-sm text-go"></i> @obj.bio
+                    </p>
+                   <form method="post">
+                       <div class="input-group" >
+                            <input class="form-control" id="message" placeholder="Message body" required/>
+                            <button class="input-group-propend btn fas fa-paper-plane text-center p-2 rounded text-go" type="submit"></button>
+                       </div>
+                   </form>
+                </div>
+                <h4 class="fw-bolder text-go text-center"> <i class="fas fa-comment"></i> @totalPost  </h4>
 
-<h3>@obj.fullname</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9  pt-2" style="min-height:80vh;max-height:80vh;overflow-y:scroll">
+        <h5>Discussions</h5>
+         <div class="container mt-4">
+            @foreach(var post in posts){
+
+                <div class="card mb-2">
+                    <div class="row no-gutters">
+                        <!-- Left-aligned image column (col-3) -->
+                        <div class="col-md-3">
+                            <img src="@Url.Content("~/uploads/" + post.image)" class="card-img" alt="Sample Image">
+                        </div>
+                        <!-- Details column (col-9) -->
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <div class="text-go col-12" style="display:flex;justify-content:right;gap:10px">
+                                    <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.id"><i class="fas fa-edit text-warning"></i></a>
+                                    <a asp-action="Delete" asp-controller="Post" asp-route-id="@post.id"><i class="fas fa-trash-alt text-danger"></i></a>
+                                </div>
+                                <h5 class="card-title">@post.title</h5>
+                                <p class="card-text">@post.details.Substring(0,100)  <a asp-controller="Post" asp-action="Details" asp-route-id="@post.id"> <small>readmore...</small></a> </p>
+                                <p class="card-text text-go row">
+                                    <small class="text-go col-md-8">@post.created_at</small> 
+                                    <span style="text-align:right" class="col-md-4">
+                                        <i class="fas fa-thumbs-up"></i> @post.like_count
+                                        <i class="fas fa-comment"></i>
+                                        <i class="fas fa-comment" style="margin-left:-16px"></i> @post.comment_count
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+</div>
 
